@@ -36,10 +36,9 @@ func Commit(cmd *cobra.Command, args []string) {
 
     gitCmd := exec.Command("bash", "-c", fmt.Sprintf("git commit -m \"%s: %s\" ", selectedWord, commitMessage))
     gitCmd.Stderr = os.Stderr
-    output, err := gitCmd.Output()
+    err = gitCmd.Run()
     if err != nil {
         log.Fatalf("Error echoing: %v", err)
     }
 
-    fmt.Println("commit message:", string(output))
 }
