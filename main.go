@@ -1,8 +1,7 @@
 package main
 
 import (
-    "fmt"
-    "os"
+    "log"
 
     "github.com/spf13/cobra"
 
@@ -16,7 +15,7 @@ import (
 // }
 
 func main() {
-    var rootCmd = &cobra.Command{Use: "mytool"}
+    var rootCmd = &cobra.Command{Use: "gi"}
 
     var addCmnd = &cobra.Command{
 		Use:   "add",
@@ -30,11 +29,17 @@ func main() {
 		Run: commands.Commit,
 	}
 
+    var logCmd = &cobra.Command{
+		Use:   "log",
+		Short: "Print repository history",
+		Run: commands.Log,
+	}
+
     rootCmd.AddCommand(addCmnd)
 	rootCmd.AddCommand(commitCmd)
+    rootCmd.AddCommand(logCmd)
 
     if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+        log.Fatalf("Error: %v", err)
 	}
 }

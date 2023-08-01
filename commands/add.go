@@ -2,6 +2,7 @@ package commands
 
 import (
     "fmt"
+	"log"
     "os"
     "os/exec"
 	"path/filepath"
@@ -13,15 +14,13 @@ func Add(cmd *cobra.Command, args []string) {
 	// Find the root folder of the Git repository.
 	gitRoot, err := findGitRoot()
 	if err != nil {
-		fmt.Println("Error finding the root folder of the Git repository:", err)
-		os.Exit(1)
+		log.Fatalf("Error: %v", err)
 	}
 
 	// Move to the root folder if it is different from the current working directory.
 	if gitRoot != "" {
 		if err := os.Chdir(gitRoot); err != nil {
-			fmt.Println("Error changing the current working directory to the root folder:", err)
-			os.Exit(1)
+			log.Fatalf("Error: %v", err)
 		}
 	}
 
@@ -31,8 +30,7 @@ func Add(cmd *cobra.Command, args []string) {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
-			fmt.Println("Error executing 'git add .':", err)
-			os.Exit(1)
+			log.Fatalf("Error: %v", err)
 		}
 	} else {
 		// If arguments are provided, run 'git add' with the specified files.
@@ -41,8 +39,7 @@ func Add(cmd *cobra.Command, args []string) {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
-			fmt.Println("Error executing 'git add':", err)
-			os.Exit(1)
+			log.Fatalf("Error: %v", err)
 		}
 	}
 }

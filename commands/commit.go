@@ -21,7 +21,7 @@ func Commit(cmd *cobra.Command, args []string) {
 
     err := survey.AskOne(wordPrompt, &selectedWord, survey.WithValidator(survey.Required))
     if err != nil {
-        log.Fatalf("Prompt failed: %v", err)
+        log.Fatalf("Error: %v", err)
     }
 
     var commitMessage string
@@ -31,14 +31,14 @@ func Commit(cmd *cobra.Command, args []string) {
 
     err = survey.AskOne(textPrompt, &commitMessage, survey.WithValidator(survey.Required))
     if err != nil {
-        log.Fatalf("Prompt failed: %v", err)
+        log.Fatalf("Error: %v", err)
     }
 
     gitCmd := exec.Command("bash", "-c", fmt.Sprintf("git commit -m \"%s: %s\" ", selectedWord, commitMessage))
     gitCmd.Stderr = os.Stderr
     err = gitCmd.Run()
     if err != nil {
-        log.Fatalf("Error echoing: %v", err)
+        log.Fatalf("Error: %v", err)
     }
 
 }
