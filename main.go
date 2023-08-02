@@ -1,7 +1,7 @@
 package main
 
 import (
-    "log"
+    "os"
 
     "github.com/spf13/cobra"
 
@@ -35,11 +35,18 @@ func main() {
 		Run: commands.Log,
 	}
 
+	var checkoutCmd = &cobra.Command{
+		Use:   "checkout",
+		Short: "Checkout branches of the repository",
+		Run: commands.Checkout,
+	}
+
     rootCmd.AddCommand(addCmnd)
 	rootCmd.AddCommand(commitCmd)
     rootCmd.AddCommand(logCmd)
+	rootCmd.AddCommand(checkoutCmd)
 
     if err := rootCmd.Execute(); err != nil {
-        log.Fatalf("Error: %v", err)
+        os.Exit(1)
 	}
 }

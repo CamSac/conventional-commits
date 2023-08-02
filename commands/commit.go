@@ -2,7 +2,6 @@ package commands
 
 import (
     "fmt"
-    "log"
     "os"
     "os/exec"
 
@@ -21,7 +20,7 @@ func Commit(cmd *cobra.Command, args []string) {
 
     err := survey.AskOne(wordPrompt, &selectedWord, survey.WithValidator(survey.Required))
     if err != nil {
-        log.Fatalf("Error: %v", err)
+        os.Exit(1)
     }
 
     var commitMessage string
@@ -31,14 +30,14 @@ func Commit(cmd *cobra.Command, args []string) {
 
     err = survey.AskOne(textPrompt, &commitMessage, survey.WithValidator(survey.Required))
     if err != nil {
-        log.Fatalf("Error: %v", err)
+        os.Exit(1)
     }
 
     gitCmd := exec.Command("bash", "-c", fmt.Sprintf("git commit -m \"%s: %s\" ", selectedWord, commitMessage))
     gitCmd.Stderr = os.Stderr
     err = gitCmd.Run()
     if err != nil {
-        log.Fatalf("Error: %v", err)
+        os.Exit(1)
     }
 
 }
